@@ -12,6 +12,9 @@ const CompanySchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  profilePhotoLocation: {
+    type: String,
+  },
   encryptedPassword: {
     type: String,
     required: true,

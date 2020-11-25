@@ -16,9 +16,9 @@ const options = {
     password: {
       type: 'password',
     },
-    profilePhotoLocation: {
+    uploadImage: {
       components: {
-        edit: AdminBro.bundle('./components/profile-photo-location.edit.tsx'),
+        edit: AdminBro.bundle('./components/upload-image.edit.tsx'),
       },
     },
   },

@@ -6,6 +6,11 @@ const {
   before: passwordBeforeHook,
 } = require('./actions/password.hook');
 
+const {
+  after: uploadAfterHook,
+  before: uploadBeforeHook,
+} = require('./actions/upload-image.hook');
+
 /** @type {AdminBro.ResourceOptions} */
 
 const options = {
@@ -24,8 +29,14 @@ const options = {
   },
   actions: {
     new: {
-      after: passwordAfterHook,
-      before: passwordBeforeHook,
+      after: async (response, request, context) => {
+        const modifiedResponse = await passwordAfterHook(response, request, context);
+        return uploadAfterHook(modifiedResponse, request, context);
+      },
+      before: async (request, context) => {
+        const modifiedRequest = await passwordBeforeHook(request, context);
+        return uploadBeforeHook(modifiedRequest, context);
+      },
     },
     edit: {
       after: passwordAfterHook,

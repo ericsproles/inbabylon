@@ -5,7 +5,7 @@ const { default: AdminBro } = require('admin-bro');
 /** @type {AdminBro.After<AdminBro.ActionResponse>} */
 
 const after = async (response) => {
-  if (response.record && response.record.errors) {
+  if (response.record && response.record.errors && response.record.errors.encryptedPassword) {
     response.record.errors.password = response.record.errors.encryptedPassword;
   }
   return response;

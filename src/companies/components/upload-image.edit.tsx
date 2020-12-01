@@ -1,20 +1,26 @@
 import React from 'react'
-import {DropZone, DropZoneProps, Label, Box} from '@admin-bro/design-system';
-import { BasePropertyProps } from 'admin-bro';
+import {DropZone, DropZoneProps, DropZoneItem, Label, Box} from '@admin-bro/design-system';
+import { BasePropertyProps } from 'admin-bro'
 
 const Edit: React.FC<BasePropertyProps> = (props) => {
-    const { property, onChange } = props
+  const { property, onChange, record } = props
 
-    const handleDropZoneChange: DropZoneProps['onChange'] = (files) => {
-        onChange(property.name, files[0])
+  const handleDropZoneChange: DropZoneProps['onChange'] = (files) => {
+    onChange(property.name, files[0])
+  }
 
-    }
-    return (
-        <Box>
-            <Label>Upload profile photo</Label>
-            <DropZone onChange={(files) => console.log(files)}/>
-        </Box>
-    )
+  const uploadedPhoto = record.params.profilePhotoLocation
+  const photoToUpload = record.params[property.name]
+
+  return (
+    <Box marginBottom="xxl">
+      <Label>{property.label}</Label>
+      <DropZone onChange={handleDropZoneChange}/>
+      {uploadedPhoto && !photoToUpload && (
+        <DropZoneItem src={uploadedPhoto} />
+      )}
+    </Box>
+  )
 }
 
-export default Edit;
+export default Edit

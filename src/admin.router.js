@@ -1,4 +1,4 @@
-const AdminBro = require('admin-bro');
+const { default: AdminBro } = require('admin-bro');
 const { buildAuthenticatedRouter } = require('admin-bro-expressjs');
 const express = require('express');
 const argon2 = require('argon2');
@@ -9,11 +9,9 @@ const MongoStore = require('connect-mongo')(session);
 const { Company } = require('./companies/company.entity');
 
 /**
- *
  * @param {AdminBro} admin
  * @return {express.Router} router
  */
-
 const buildAdminRouter = (admin) => {
   const router = buildAuthenticatedRouter(admin, {
     cookieName: 'admin-bro',
@@ -21,7 +19,7 @@ const buildAdminRouter = (admin) => {
     authenticate: async (email, password) => {
       const company = await Company.findOne({ email });
 
-      if (company && argon2.verify(company.encryptedPassword, password)) {
+      if (company && await argon2.verify(company.encryptedPassword, password)) {
         return company.toJSON();
       }
       return null;

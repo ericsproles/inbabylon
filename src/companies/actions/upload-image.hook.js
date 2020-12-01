@@ -1,15 +1,16 @@
 const path = require('path');
 const fs = require('fs');
-const Adminbro = require('admin-bro');
-const { default: AdminBro } = require('admin-bro');
+const AdminBro = require('admin-bro');
 
 /** @type {AdminBro.After<AdminBro.ActionResponse>} */
-
 const after = async (response, request, context) => {
   const { record, uploadImage } = context;
+  console.log('context:', context);
 
   if (record.isValid() && uploadImage) {
-    const filePath = path.join('uploads', record.id().toString(), uploadImage.name);
+    console.log('uploadImage inside if statement:', uploadImage);
+    console.log('record: ', record);
+    const filePath = path.join('uploads', 'images', uploadImage.name);
     await fs.promises.mkdir(path.dirname(filePath), { recursive: true });
 
     await fs.promises.rename(uploadImage.path, filePath);
@@ -23,6 +24,8 @@ const after = async (response, request, context) => {
 const before = async (request, context) => {
   if (request.method === 'post') {
     const { uploadImage, ...otherParams } = request.payload;
+
+    // eslint-disable-next-line no-param-reassign
     context.uploadImage = uploadImage;
 
     return {

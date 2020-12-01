@@ -1,4 +1,4 @@
-const { default: AdminBro } = require('admin-bro');
+const AdminBro = require('admin-bro');
 const { Company } = require('./company.entity');
 
 const {
@@ -12,10 +12,12 @@ const {
 } = require('./actions/upload-image.hook');
 
 /** @type {AdminBro.ResourceOptions} */
-
 const options = {
   properties: {
     encryptedPassword: {
+      isVisible: false,
+    },
+    profilePhotoLocation: {
       isVisible: false,
     },
     password: {
@@ -24,6 +26,7 @@ const options = {
     uploadImage: {
       components: {
         edit: AdminBro.bundle('./components/upload-image.edit.tsx'),
+        list: AdminBro.bundle('./components/upload-image.list.tsx'),
       },
     },
   },
@@ -39,8 +42,17 @@ const options = {
       },
     },
     edit: {
-      after: passwordAfterHook,
-      before: passwordBeforeHook,
+      after: async (response, request, context) => {
+        const modifiedResponse = await passwordAfterHook(response, request, context);
+        return uploadAfterHook(modifiedResponse, request, context);
+      },
+      before: async (request, context) => {
+        const modifiedRequest = await passwordBeforeHook(request, context);
+        return uploadBeforeHook(modifiedRequest, context);
+      },
+    },
+    show: {
+      isVisible: false,
     },
   },
 };

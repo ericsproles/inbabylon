@@ -5,8 +5,7 @@ AdminBro.registerAdapter(AdminBroMongoose);
 
 const AdminCompany = require('./companies/company.admin');
 
-/**  @type {import('admin-bro').AdminBro.AdminBroOptions} */
-
+/** @type {import('admin-bro').AdminBroOptions} */
 const options = {
   resources: [AdminCompany],
 };

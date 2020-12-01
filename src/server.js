@@ -21,6 +21,8 @@ const run = async () => {
   const router = buildAdminRouter(admin);
   app.use(admin.options.rootPath, router);
 
+  app.use('/uploads', express.static('uploads'));
+
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
   });

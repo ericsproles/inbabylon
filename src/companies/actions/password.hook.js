@@ -1,9 +1,7 @@
 const argon2 = require('argon2');
-const Adminbro = require('admin-bro');
-const { default: AdminBro } = require('admin-bro');
+const AdminBro = require('admin-bro');
 
 /** @type {AdminBro.After<AdminBro.ActionResponse>} */
-
 const after = async (response) => {
   if (response.record && response.record.errors && response.record.errors.encryptedPassword) {
     response.record.errors.password = response.record.errors.encryptedPassword;
@@ -31,4 +29,4 @@ const before = async (request) => {
   return request;
 };
 
-module.exports = { before, after };
+module.exports = { after, before };
